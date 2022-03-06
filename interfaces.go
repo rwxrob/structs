@@ -11,6 +11,25 @@ type Stack interface {
 	Peek() any
 }
 
+// Tree specifies a rooted node tree made up of Node implementations.
+// The Tree holds the meta data about Node types including their string
+// equivalents corresponding to integer type. Implementations of Tree
+// must also implement Node fully as well so that the underlying structs
+// work well together, specifically the Node struct implementation
+// should know about the Tree struct implementation to which it belongs.
+// When a Tree is initialized with Init it sets the internal cache of
+// type strings and (re)generates the Root node. All other Nodes are
+// added to the tree with Node.Add. The Tree.Root Node can never be
+// destroyed (Node.Destroy) since Tree.Root will always refer to it even
+// if it has no Nodes of its own and an empty value.
+type Tree interface {
+	Init(ts []string) error  // (re)initialize with new types and new root
+	Types() []string         // returns slice corresponding to type int
+	TypeString(i int) string // returns string for given type
+	Node(t int) Node         // return new node of type t for tree
+	Root() Node              // returns root node
+}
+
 // Node specifies a node (or leaf/edge) for use in any graph or tree
 // data structure. Nodes under a Node are usually implemented as
 // a linked list and therefore checking HasNodes first before calling
@@ -29,7 +48,7 @@ type Node interface {
 	Init(t int) error // set type and any state for that type
 	Add(t int) Node   // add a new node under self
 	Destroy()         // removes self from existence
-	Detach()          // detach from node this node is under
+	Cut()             // detach from upper node but not under
 	Take(from Node)   // take all nodes from under another
 }
 
