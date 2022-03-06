@@ -1,5 +1,7 @@
 # Traditional Data Structs in Go (1.18)
 
+🚧 *under construction* 🚧
+
 [![Go
 Version](https://img.shields.io/github/go-mod/go-version/rwxrob/structs)](https://tip.golang.org/doc/go1.18)
 [![GoDoc](https://godoc.org/github.com/rwxrob/structs?status.svg)](https://godoc.org/github.com/rwxrob/structs)
