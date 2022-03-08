@@ -76,11 +76,11 @@ func ExampleQStack_Unshift() {
 	s.Push(true)
 	s.Push("foo")
 	s.Print()
-	s.Unshift(0)
+	s.Unshift(0, 34, 2)
 	s.Print()
 	// Output:
 	// [1,true,"foo"]
-	// [0,1,true,"foo"]
+	// [0,34,2,1,true,"foo"]
 }
 
 func ExampleQStack_Has_Shift_Unshift() {

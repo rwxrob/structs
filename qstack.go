@@ -45,11 +45,11 @@ func (s *QStack[T]) Peek() any {
 
 // Push (stack) will add anything to the top.
 func (s *QStack[T]) Push(these ...T) {
-	for _, it := range these {
+	for i := len(these) - 1; i >= 0; i-- {
 		s.Has = true
 		s.Len++
 		n := new(item[T])
-		n.val = it
+		n.val = these[i]
 		if s.top == nil {
 			s.top = n
 			s.bot = n
@@ -97,11 +97,11 @@ func (s *QStack[T]) Shift() any {
 
 // Unshift adds items to the bottom of the stack.
 func (s *QStack[T]) Unshift(these ...T) {
-	for _, it := range these {
+	for i := len(these) - 1; i >= 0; i-- {
 		s.Has = true
 		s.Len++
 		n := new(item[T])
-		n.val = it
+		n.val = these[i]
 		if s.top == nil {
 			s.top = n
 			s.bot = n
