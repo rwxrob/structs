@@ -1,4 +1,4 @@
-# Traditional Data Structs in Go (1.18)
+# Data Structs with Go (1.18+) Generics
 
 [![Go
 Version](https://img.shields.io/github/go-mod/go-version/rwxrob/structs)](https://tip.golang.org/doc/go1.18)
@@ -16,3 +16,17 @@ Card](https://goreportcard.com/badge/github.com/rwxrob/structs)](https://gorepor
 All structures make judicious use of generics and implement the same
 json.AsJSON interface (and others) making them much more consumable and
 shareable.
+
+## Design Decisions
+
+* **Why no linked-list or queue?** Because they are fulfilled by QStack
+  and Node.
+
+* **Decided to drop async walks of Node.** It's easily accomplished by
+  enclosing whatever channel is needed in the iterator function and
+  forking a goroutine off from within it.
+
+## TODO
+
+* Add equivalent methods to Node from JavaScript (InsertAfter, etc.)
+* Add Union and other set methods
