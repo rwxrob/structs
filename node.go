@@ -20,12 +20,11 @@ const (
 // constraints on implementation or visual representation. Node is
 // implemented as a linked list for maximum performance. Also see tree.
 type Node[T any] struct {
-	T int      `json:"T"`          // type
-	V T        `json:",omitempty"` // value
-	P *Node[T] `json:"-"`          // up/parent
-
-	// cached properties for efficient checks
-	Count int // count of nodes under
+	T     int      `json:"T"`          // type
+	V     T        `json:",omitempty"` // value
+	P     *Node[T] `json:"-"`          // up/parent
+	Count int      `json:"-"`          // node count
+	Tree  *Tree[T] `json:"-"`          // optional tree with type names
 
 	left  *Node[T]
 	right *Node[T]
@@ -73,14 +72,7 @@ func (n *Node[T]) Add(t int, v T) *Node[T] {
 	u.T = t
 	u.V = v
 	u.P = n
-	if n.first == nil {
-		n.first = u
-		n.last = u
-		return u
-	}
-	n.last.right = u
-	u.left = n.last
-	n.last = u
+	n.Append(u)
 	return u
 }
 
@@ -124,6 +116,19 @@ func (n *Node[T]) Take(from *Node[T]) {
 	}
 	from.first = nil
 	from.last = nil
+}
+
+// Append adds an existing Node under this one as if Add had been
+// called.
+func (n *Node[T]) Append(u *Node[T]) {
+	if n.first == nil {
+		n.first = u
+		n.last = u
+		return
+	}
+	n.last.right = u
+	u.left = n.last
+	n.last = u
 }
 
 // ------------------------------- Walk --------------------------------
