@@ -43,20 +43,21 @@ func (s *QStack[T]) Peek() any {
 	return s.bot.V
 }
 
-// Push (stack) will add anything to the top.
 func (s *QStack[T]) Push(these ...T) {
 	for i := 0; i < len(these); i++ {
 		s.Len++
 		n := new(item[T])
 		n.V = these[i]
-		if s.top == nil {
-			s.top = n
+		switch s.Len {
+		case 1:
 			s.bot = n
+			s.top = n
 			continue
+		default:
+			s.top.next = n
+			n.prev = s.top
+			s.top = n
 		}
-		s.top.next = n
-		n.prev = s.top
-		s.top = n
 	}
 }
 
@@ -108,14 +109,16 @@ func (s *QStack[T]) Unshift(these ...T) {
 		s.Len++
 		n := new(item[T])
 		n.V = these[i]
-		if s.bot == nil {
+		switch s.Len {
+		case 1:
 			s.bot = n
 			s.top = n
 			continue
+		default:
+			s.bot.prev = n
+			n.next = s.bot
+			s.bot = n
 		}
-		s.bot.prev = n
-		n.next = s.bot
-		s.bot = n
 	}
 }
 

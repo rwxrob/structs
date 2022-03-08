@@ -213,6 +213,16 @@ func ExampleNode_Take() {
 
 }
 
+func ExampleWalkLevels() {
+	n := new(structs.Node[any])
+	n.Add(1, nil).Add(11, nil)
+	n.Add(2, nil).Add(22, nil)
+	n.Add(3, nil).Add(33, nil)
+	n.WalkLevels(func(c *structs.Node[any]) { fmt.Print(c.T, " ") })
+	// Output:
+	// 0 1 2 3 11 22 33
+}
+
 func ExampleWalkDeepPre() {
 	n := new(structs.Node[any])
 	n.Add(1, nil).Add(11, nil)

@@ -128,6 +128,22 @@ func (n *Node[T]) Take(from *Node[T]) {
 
 // ------------------------------- Walk --------------------------------
 
+// WalkLevels will pass each Node in the tree to the given function
+// traversing in a synchronous, breadth-first, leveler way. The function
+// passed may be a closure containing variables, contexts, or a channel
+// outside of its own scope to be updated for each visit. This method
+// uses functional recursion which may have some limitations depending
+// on the depth of node trees required.
+func (n *Node[T]) WalkLevels(do func(n *Node[T])) {
+	list := new(QStack[*Node[T]])
+	list.Unshift(n)
+	for list.Len > 0 {
+		cur := list.Shift().(*Node[T])
+		list.Push(cur.Nodes()...)
+		do(cur)
+	}
+}
+
 // WalkDeepPre will pass each Node in the tree to the given function
 // traversing in a synchronous, depth-first, preorder way. The function
 // passed may be a closure containing variables, contexts, or a channel
@@ -135,14 +151,11 @@ func (n *Node[T]) Take(from *Node[T]) {
 // uses functional recursion which may have some limitations depending
 // on the depth of node trees required.
 func (n *Node[T]) WalkDeepPre(do func(n *Node[T])) {
-	list := []*Node[T]{n}
-	for len(list) > 0 {
-		cur := list[0]
-		list = list[1:]
-		nlist := []*Node[T]{} // TODO replace with QStack
-		nlist = append(nlist, cur.Nodes()...)
-		nlist = append(nlist, list...)
-		list = nlist
+	list := new(QStack[*Node[T]])
+	list.Unshift(n)
+	for list.Len > 0 {
+		cur := list.Shift().(*Node[T])
+		list.Unshift(cur.Nodes()...)
 		do(cur)
 	}
 }
