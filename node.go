@@ -72,6 +72,7 @@ func (n *Node[T]) Add(t int, v T) *Node[T] {
 	u.T = t
 	u.V = v
 	u.P = n
+	u.Tree = n.Tree
 	n.Append(u)
 	return u
 }
@@ -129,6 +130,21 @@ func (n *Node[T]) Append(u *Node[T]) {
 	n.last.right = u
 	u.left = n.last
 	n.last = u
+}
+
+// Morph initializes the node with Init and then sets it's value (V) and
+// type (T) and all of its attachment references to those of the Node
+// passed thereby preserving the Node reference of this method's
+// receiver.
+func (n *Node[T]) Morph(c *Node[T]) {
+	n.Init()
+	n.T = c.T
+	n.V = c.V
+	n.P = c.P
+	n.left = c.left
+	n.right = c.right
+	n.first = c.first
+	n.last = c.last
 }
 
 // ------------------------------- Walk --------------------------------

@@ -213,7 +213,7 @@ func ExampleNode_Take() {
 
 }
 
-func ExampleWalkLevels() {
+func ExampleNode_WalkLevels() {
 	n := new(structs.Node[any])
 	n.Add(1, nil).Add(11, nil)
 	n.Add(2, nil).Add(22, nil)
@@ -223,7 +223,7 @@ func ExampleWalkLevels() {
 	// 0 1 2 3 11 22 33
 }
 
-func ExampleWalkDeepPre() {
+func ExampleNode_WalkDeepPre() {
 	n := new(structs.Node[any])
 	n.Add(1, nil).Add(11, nil)
 	n.Add(2, nil).Add(22, nil)
@@ -231,4 +231,16 @@ func ExampleWalkDeepPre() {
 	n.WalkDeepPre(func(c *structs.Node[any]) { fmt.Print(c.T, " ") })
 	// Output:
 	// 0 1 11 2 22 3 33
+}
+
+func ExampleNode_Morph() {
+	n := new(structs.Node[any])
+	n.Add(2, "some")
+	m := new(structs.Node[any])
+	m.Morph(n)
+	n.Print()
+	m.Print()
+	// Output:
+	// {"T":0,"N":[{"T":2,"V":"some"}]}
+	// {"T":0,"N":[{"T":2,"V":"some"}]}
 }
