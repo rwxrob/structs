@@ -24,7 +24,8 @@ type QStack struct {
 }
 
 // Items returns the items of the stack as a slice with newest items on
-// the right.
+// the right. To apply an iterator function over the items consider
+// using the rwxrob/fn package with Map/Filter/Reduce/Each functions.
 func (s *QStack) Items() []any {
 	items := []any{}
 	for cur := s.top; cur != nil; cur = cur.right {
