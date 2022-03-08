@@ -9,11 +9,10 @@ Card](https://goreportcard.com/badge/github.com/rwxrob/structs)](https://gorepor
 
 *Go report card has no idea how to handle Go 1.18.* 😀
 
-* [Interfaces](interfaces.go)
-* [Text Sets](set/text/set)
 * [QStack](qstack_test.go)
 * [Node](node_test.go)
-* [Trees](tree)
+* [Tree](tree_test.go)
+* [Text Sets](set/text/set)
 
 All structures make judicious use of generics and implement the same
 json.AsJSON interface (and others) making them much more consumable and
