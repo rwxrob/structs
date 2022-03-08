@@ -8,8 +8,8 @@ import (
 	"github.com/rwxrob/structs"
 )
 
-func ExampleStack_Push() {
-	s := new(structs.Stack)
+func ExampleQStack_Push() {
+	s := new(structs.QStack)
 	s.Print()
 	s.Push("it")
 	s.Print()
@@ -18,8 +18,8 @@ func ExampleStack_Push() {
 	// ["it"]
 }
 
-func ExampleStack_Peek() {
-	s := new(structs.Stack)
+func ExampleQStack_Peek() {
+	s := new(structs.QStack)
 	s.Print()
 	s.Push("it")
 	fmt.Println(s.Peek())
@@ -28,8 +28,8 @@ func ExampleStack_Peek() {
 	// it
 }
 
-func ExampleStack_Pop() {
-	s := new(structs.Stack)
+func ExampleQStack_Pop() {
+	s := new(structs.QStack)
 	s.Print()
 	p := s.Pop()
 	fmt.Println(p)
@@ -46,8 +46,8 @@ func ExampleStack_Pop() {
 	// it
 }
 
-func ExampleStack_Items() {
-	s := new(structs.Stack)
+func ExampleQStack_Items() {
+	s := new(structs.QStack)
 	s.Push(1)
 	s.Push(true)
 	s.Push("foo")
@@ -57,8 +57,8 @@ func ExampleStack_Items() {
 	// [1,true,"foo",{"ten":10,"twenty":20}]
 }
 
-func ExampleStack_Shift() {
-	s := new(structs.Stack)
+func ExampleQStack_Shift() {
+	s := new(structs.QStack)
 	s.Push(1)
 	s.Push(true)
 	s.Push("foo")
@@ -70,8 +70,8 @@ func ExampleStack_Shift() {
 	// [true,"foo"]
 }
 
-func ExampleStack_Unshift() {
-	s := new(structs.Stack)
+func ExampleQStack_Unshift() {
+	s := new(structs.QStack)
 	s.Push(1)
 	s.Push(true)
 	s.Push("foo")
@@ -83,44 +83,44 @@ func ExampleStack_Unshift() {
 	// [0,1,true,"foo"]
 }
 
-func ExampleStack_Has_Shift_Unshift() {
-	s := new(structs.Stack)
-	fmt.Println(s.Has)
+func ExampleQStack_Has_Shift_Unshift() {
+	s := new(structs.QStack)
+	fmt.Println(s.Has, s.Len)
 	s.Unshift("foo")
-	fmt.Println(s.Has)
+	fmt.Println(s.Has, s.Len)
 	s.Shift()
-	fmt.Println(s.Has)
+	fmt.Println(s.Has, s.Len)
 	// Output:
-	// false
-	// true
-	// false
+	// false 0
+	// true 1
+	// false 0
 }
 
-func ExampleStack_Has_Push_Pop() {
-	s := new(structs.Stack)
-	fmt.Println(s.Has)
+func ExampleQStack_Has_Push_Pop() {
+	s := new(structs.QStack)
+	fmt.Println(s.Has, s.Len)
 	s.Push("foo")
-	fmt.Println(s.Has)
+	fmt.Println(s.Has, s.Len)
 	s.Pop()
-	fmt.Println(s.Has)
+	fmt.Println(s.Has, s.Len)
 	// Output:
-	// false
-	// true
-	// false
+	// false 0
+	// true 1
+	// false 0
 }
 
-func ExampleStack_invalid_JSON_Types() {
+func ExampleQStack_invalid_JSON_Types() {
 	defer log.SetOutput(os.Stderr)
 	defer log.SetFlags(log.Flags())
 	log.SetOutput(os.Stdout)
 	log.SetFlags(0)
 
-	// Stack can be used to store any type,
+	// QStack can be used to store any type,
 	// but log an error (no panic) when
 	// attempting to use the stack item
 	// in a string context.
 
-	s := new(structs.Stack)
+	s := new(structs.QStack)
 	s.Push(func() {})
 	s.Print()
 
