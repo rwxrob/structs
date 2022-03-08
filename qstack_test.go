@@ -11,11 +11,14 @@ import (
 func ExampleQStack_Push() {
 	s := new(structs.QStack[any])
 	s.Print()
-	s.Push("it")
+	s.Push("one")
+	s.Print()
+	s.Push("two")
 	s.Print()
 	// Output:
 	// []
-	// ["it"]
+	// ["one"]
+	// ["one","two"]
 }
 
 func ExampleQStack_Peek() {
@@ -34,16 +37,21 @@ func ExampleQStack_Pop() {
 	p := s.Pop()
 	fmt.Println(p)
 	s.Push("it")
+	s.Push("again")
 	s.Print()
+	fmt.Println(s.Len)
 	p = s.Pop()
 	s.Print()
 	fmt.Println(p)
+	fmt.Println(s.Len)
 	// Output:
 	// []
 	// <nil>
+	// ["it","again"]
+	// 2
 	// ["it"]
-	// []
-	// it
+	// again
+	// 1
 }
 
 func ExampleQStack_Items() {
@@ -63,11 +71,21 @@ func ExampleQStack_Shift() {
 	s.Push(true)
 	s.Push("foo")
 	v := s.Shift()
-	fmt.Println(v)
+	fmt.Println(v, s.Len)
+	s.Print()
+	v = s.Shift()
+	fmt.Println(v, s.Len)
+	s.Print()
+	v = s.Shift()
+	fmt.Println(v, s.Len)
 	s.Print()
 	// Output:
-	// 1
+	// 1 2
 	// [true,"foo"]
+	// true 1
+	// ["foo"]
+	// foo 0
+	// []
 }
 
 func ExampleQStack_Unshift() {
@@ -76,37 +94,15 @@ func ExampleQStack_Unshift() {
 	s.Push(true)
 	s.Push("foo")
 	s.Print()
+	fmt.Println(s.Len)
 	s.Unshift(0, 34, 2)
 	s.Print()
+	fmt.Println(s.Len)
 	// Output:
 	// [1,true,"foo"]
+	// 3
 	// [0,34,2,1,true,"foo"]
-}
-
-func ExampleQStack_Has_Shift_Unshift() {
-	s := new(structs.QStack[any])
-	fmt.Println(s.Has, s.Len)
-	s.Unshift("foo")
-	fmt.Println(s.Has, s.Len)
-	s.Shift()
-	fmt.Println(s.Has, s.Len)
-	// Output:
-	// false 0
-	// true 1
-	// false 0
-}
-
-func ExampleQStack_Has_Push_Pop() {
-	s := new(structs.QStack[any])
-	fmt.Println(s.Has, s.Len)
-	s.Push("foo")
-	fmt.Println(s.Has, s.Len)
-	s.Pop()
-	fmt.Println(s.Has, s.Len)
-	// Output:
-	// false 0
-	// true 1
-	// false 0
+	// 6
 }
 
 func ExampleQStack_invalid_JSON_Types() {
