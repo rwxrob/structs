@@ -7,6 +7,8 @@ Version](https://img.shields.io/github/go-mod/go-version/rwxrob/structs)](https:
 [![Go Report
 Card](https://goreportcard.com/badge/github.com/rwxrob/structs)](https://goreportcard.com/report/github.com/rwxrob/structs)
 
+*Go report card has no idea how to handle Go 1.18.* 😀
+
 * [Interfaces](interfaces.go)
 * [Text Sets](set/text/set)
 * [QStack](qstack_test.go)
