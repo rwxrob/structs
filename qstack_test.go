@@ -9,7 +9,7 @@ import (
 )
 
 func ExampleQStack_Push() {
-	s := new(structs.QStack)
+	s := new(structs.QStack[any])
 	s.Print()
 	s.Push("it")
 	s.Print()
@@ -19,7 +19,7 @@ func ExampleQStack_Push() {
 }
 
 func ExampleQStack_Peek() {
-	s := new(structs.QStack)
+	s := new(structs.QStack[any])
 	s.Print()
 	s.Push("it")
 	fmt.Println(s.Peek())
@@ -29,7 +29,7 @@ func ExampleQStack_Peek() {
 }
 
 func ExampleQStack_Pop() {
-	s := new(structs.QStack)
+	s := new(structs.QStack[any])
 	s.Print()
 	p := s.Pop()
 	fmt.Println(p)
@@ -47,7 +47,7 @@ func ExampleQStack_Pop() {
 }
 
 func ExampleQStack_Items() {
-	s := new(structs.QStack)
+	s := new(structs.QStack[any])
 	s.Push(1)
 	s.Push(true)
 	s.Push("foo")
@@ -58,7 +58,7 @@ func ExampleQStack_Items() {
 }
 
 func ExampleQStack_Shift() {
-	s := new(structs.QStack)
+	s := new(structs.QStack[any])
 	s.Push(1)
 	s.Push(true)
 	s.Push("foo")
@@ -71,7 +71,7 @@ func ExampleQStack_Shift() {
 }
 
 func ExampleQStack_Unshift() {
-	s := new(structs.QStack)
+	s := new(structs.QStack[any])
 	s.Push(1)
 	s.Push(true)
 	s.Push("foo")
@@ -84,7 +84,7 @@ func ExampleQStack_Unshift() {
 }
 
 func ExampleQStack_Has_Shift_Unshift() {
-	s := new(structs.QStack)
+	s := new(structs.QStack[any])
 	fmt.Println(s.Has, s.Len)
 	s.Unshift("foo")
 	fmt.Println(s.Has, s.Len)
@@ -97,7 +97,7 @@ func ExampleQStack_Has_Shift_Unshift() {
 }
 
 func ExampleQStack_Has_Push_Pop() {
-	s := new(structs.QStack)
+	s := new(structs.QStack[any])
 	fmt.Println(s.Has, s.Len)
 	s.Push("foo")
 	fmt.Println(s.Has, s.Len)
@@ -120,7 +120,7 @@ func ExampleQStack_invalid_JSON_Types() {
 	// attempting to use the stack item
 	// in a string context.
 
-	s := new(structs.QStack)
+	s := new(structs.QStack[any])
 	s.Push(func() {})
 	s.Print()
 
