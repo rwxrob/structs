@@ -11,8 +11,10 @@ Card](https://goreportcard.com/badge/github.com/rwxrob/structs)](https://gorepor
 
 * [Interfaces](interfaces.go)
 * [Text Sets](set/text/set)
-* [Stack](stack)
-* [Node/Edge](node)
+* [QStack](qstack_test.go)
+* [Node](node_test.go)
 * [Trees](tree)
 
-All structures implement the same json.Printer interface making them much more consumable and shareable.
+All structures make judicious use of generics and implement the same
+json.AsJSON interface (and others) making them much more consumable and
+shareable.
