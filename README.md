@@ -9,9 +9,9 @@ Card](https://goreportcard.com/badge/github.com/rwxrob/structs)](https://gorepor
 
 *Go report card has no idea how to handle Go 1.18.* 😀
 
-* [QStack](qstack_test.go)
-* [Node](node_test.go)
-* [Tree](tree_test.go)
+* [Types Map](types)
+* [QStack](qstack)
+* [Rooted Node Tree](tree)
 * [Text Sets](set/text/set)
 
 All structures make judicious use of generics and implement the same

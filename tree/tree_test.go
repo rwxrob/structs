@@ -1,23 +1,48 @@
-package structs_test
+package tree_test
 
 import (
 	"fmt"
 
-	"github.com/rwxrob/structs"
+	"github.com/rwxrob/structs/tree"
+	"github.com/rwxrob/structs/types"
 )
+
+func ExampleTree() {
+	t := tree.New[any]([]string{"foo"})
+	t.Print()
+	t.Root.Print()
+	fmt.Println(t.Types.Names)
+	// Output:
+	// {"Names":["UNKNOWN","foo"],"Map":{"UNKNOWN":0,"foo":1},"Root":{"T":1}}
+	// {"T":1}
+	// ["UNKNOWN","foo"]
+}
+
+func ExampleTree_Node() {
+	t := tree.New[any]([]string{"foo"})
+	n := t.Node()
+	n.Print()
+	t.Print()
+	t.Root.Append(n)
+	t.Root.Print()
+	// Output:
+	// {"T":0}
+	// {"Names":["UNKNOWN","foo"],"Map":{"UNKNOWN":0,"foo":1},"Root":{"T":1}}
+	// {"T":1,"N":[{"T":0}]}
+}
 
 func ExampleNode() {
 
 	// flexible
-	n := new(structs.Node[any])
+	n := new(tree.Node[any])
 	n.Print()
 
 	// specific
-	m := new(structs.Node[int])
+	m := new(tree.Node[int])
 	m.Print()
 
 	// default type: UNKNOWN == 0
-	fmt.Println(n.T == structs.UNKNOWN, m.T == structs.UNKNOWN)
+	fmt.Println(n.T == types.UNKNOWN, m.T == types.UNKNOWN)
 
 	// values matching zero value are omitted
 
@@ -28,7 +53,7 @@ func ExampleNode() {
 }
 
 func ExampleNode_type_is_Integer() {
-	n := new(structs.Node[any])
+	n := new(tree.Node[any])
 	n.T = 1
 	n.Print()
 	//n.T = "one" // BOOM!
@@ -39,11 +64,11 @@ func ExampleNode_type_is_Integer() {
 
 func ExampleNode_value_Depends_on_Instantiation() {
 
-	z := new(structs.Node[any])
+	z := new(tree.Node[any])
 	z.Print() // values that are equiv of zero value for type are omitted
 
 	// flexible
-	n := new(structs.Node[any])
+	n := new(tree.Node[any])
 	n.V = 1
 	n.Print()
 	n.V = true
@@ -52,7 +77,7 @@ func ExampleNode_value_Depends_on_Instantiation() {
 	n.Print()
 
 	// strict
-	m := new(structs.Node[int])
+	m := new(tree.Node[int])
 	m.V = 1
 	m.Print()
 	//m.V = true // BOOM!
@@ -68,7 +93,7 @@ func ExampleNode_value_Depends_on_Instantiation() {
 func ExampleNode_Init() {
 
 	// create and print a brand new one
-	n := new(structs.Node[any])
+	n := new(tree.Node[any])
 	n.Print()
 
 	// add something to it
@@ -101,7 +126,7 @@ func ExampleNode_properties() {
 	// to the checks again later.
 
 	// initial state
-	n := new(structs.Node[any])
+	n := new(tree.Node[any])
 	fmt.Println("n:", n.P == nil, n.V, n.Count)
 	u := n.Add(1, nil)
 	fmt.Println("n:", n.P == nil, n.V, n.Count)
@@ -125,7 +150,7 @@ func ExampleNode_properties() {
 func ExampleNode_Nodes() {
 
 	// create the first tree
-	n := new(structs.Node[any])
+	n := new(tree.Node[any])
 	n.Add(1, nil)
 	n.Add(2, nil)
 	fmt.Println(n.Nodes(), n.Count)
@@ -142,7 +167,7 @@ func ExampleNode_Nodes() {
 }
 
 func ExampleNode_Cut_middle() {
-	n := new(structs.Node[any])
+	n := new(tree.Node[any])
 	n.Add(1, nil)
 	c := n.Add(2, nil)
 	n.Add(3, nil)
@@ -157,7 +182,7 @@ func ExampleNode_Cut_middle() {
 }
 
 func ExampleNode_Cut_first() {
-	n := new(structs.Node[any])
+	n := new(tree.Node[any])
 	c := n.Add(1, nil)
 	n.Add(2, nil)
 	n.Add(3, nil)
@@ -172,7 +197,7 @@ func ExampleNode_Cut_first() {
 }
 
 func ExampleNode_Cut_last() {
-	n := new(structs.Node[any])
+	n := new(tree.Node[any])
 	n.Add(1, nil)
 	n.Add(2, nil)
 	c := n.Add(3, nil)
@@ -189,7 +214,7 @@ func ExampleNode_Cut_last() {
 func ExampleNode_Take() {
 
 	// build up the first
-	n := new(structs.Node[any])
+	n := new(tree.Node[any])
 	n.T = 10
 	n.Add(1, nil)
 	n.Add(2, nil)
@@ -198,7 +223,7 @@ func ExampleNode_Take() {
 
 	// now take them over
 
-	m := new(structs.Node[any])
+	m := new(tree.Node[any])
 	m.T = 20
 	m.Print()
 	m.Take(n)
@@ -214,29 +239,29 @@ func ExampleNode_Take() {
 }
 
 func ExampleNode_WalkLevels() {
-	n := new(structs.Node[any])
+	n := new(tree.Node[any])
 	n.Add(1, nil).Add(11, nil)
 	n.Add(2, nil).Add(22, nil)
 	n.Add(3, nil).Add(33, nil)
-	n.WalkLevels(func(c *structs.Node[any]) { fmt.Print(c.T, " ") })
+	n.WalkLevels(func(c *tree.Node[any]) { fmt.Print(c.T, " ") })
 	// Output:
 	// 0 1 2 3 11 22 33
 }
 
 func ExampleNode_WalkDeepPre() {
-	n := new(structs.Node[any])
+	n := new(tree.Node[any])
 	n.Add(1, nil).Add(11, nil)
 	n.Add(2, nil).Add(22, nil)
 	n.Add(3, nil).Add(33, nil)
-	n.WalkDeepPre(func(c *structs.Node[any]) { fmt.Print(c.T, " ") })
+	n.WalkDeepPre(func(c *tree.Node[any]) { fmt.Print(c.T, " ") })
 	// Output:
 	// 0 1 11 2 22 3 33
 }
 
 func ExampleNode_Morph() {
-	n := new(structs.Node[any])
+	n := new(tree.Node[any])
 	n.Add(2, "some")
-	m := new(structs.Node[any])
+	m := new(tree.Node[any])
 	m.Morph(n)
 	n.Print()
 	m.Print()
