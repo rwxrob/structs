@@ -29,8 +29,8 @@ func New[T any]() *QStack[T] { return new(QStack[T]) }
 // Items returns the items of the stack as a slice with newest items on
 // the next. To apply an iterator function over the items consider
 // using the rwxrob/fn package with Map/Filter/Reduce/Each functions.
-func (s *QStack[T]) Items() []any {
-	items := []any{}
+func (s *QStack[T]) Items() []T {
+	items := []T{}
 	for cur := s.bot; cur != nil; cur = cur.next {
 		items = append(items, cur.V)
 	}
@@ -39,9 +39,10 @@ func (s *QStack[T]) Items() []any {
 
 // Peek (stack) returns the current top value of the stack. Prefer Len to
 // check for emptiness.
-func (s *QStack[T]) Peek() any {
+func (s *QStack[T]) Peek() T {
+	var rv T
 	if s.bot == nil {
-		return nil
+		return rv
 	}
 	return s.bot.V
 }
@@ -65,10 +66,11 @@ func (s *QStack[T]) Push(these ...T) {
 }
 
 // Pop removes most recently pushed item from top of stack and returns it.
-func (s *QStack[T]) Pop() any {
+func (s *QStack[T]) Pop() T {
+	var rv T
 	switch s.Len {
 	case 0:
-		return nil
+		return rv
 	case 1:
 		s.Len--
 		it := s.top
@@ -86,10 +88,11 @@ func (s *QStack[T]) Pop() any {
 }
 
 // Shift removes an item from the bottom of the stack and returns it.
-func (s *QStack[T]) Shift() any {
+func (s *QStack[T]) Shift() T {
+	var rv T
 	switch s.Len {
 	case 0:
-		return nil
+		return rv
 	case 1:
 		s.Len--
 		it := s.bot
