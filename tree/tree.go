@@ -253,7 +253,7 @@ func (n *Node[T]) WalkLevels(do func(n *Node[T])) {
 	list := qstack.New[*Node[T]]()
 	list.Unshift(n)
 	for list.Len > 0 {
-		cur := list.Shift().(*Node[T])
+		cur := list.Shift()
 		list.Push(cur.Nodes()...)
 		do(cur)
 	}
@@ -269,7 +269,7 @@ func (n *Node[T]) WalkDeepPre(do func(n *Node[T])) {
 	list := qstack.New[*Node[T]]()
 	list.Unshift(n)
 	for list.Len > 0 {
-		cur := list.Shift().(*Node[T])
+		cur := list.Shift()
 		list.Unshift(cur.Nodes()...)
 		do(cur)
 	}
