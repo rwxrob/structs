@@ -172,12 +172,16 @@ func ExampleNode_Cut_middle() {
 	c := n.Add(2, nil)
 	n.Add(3, nil)
 	n.Print()
+	fmt.Println(n.Count)
 	x := c.Cut()
 	n.Print()
+	fmt.Println(n.Count)
 	x.Print()
 	// Output:
 	// {"T":0,"N":[{"T":1},{"T":2},{"T":3}]}
+	// 3
 	// {"T":0,"N":[{"T":1},{"T":3}]}
+	// 2
 	// {"T":2}
 }
 
@@ -220,21 +224,29 @@ func ExampleNode_Take() {
 	n.Add(2, nil)
 	n.Add(3, nil)
 	n.Print()
+	fmt.Println(n.Count)
 
 	// now take them over
 
 	m := new(tree.Node[any])
 	m.T = 20
 	m.Print()
+	fmt.Println(m.Count)
 	m.Take(n)
 	m.Print()
+	fmt.Println(m.Count)
 	n.Print()
+	fmt.Println(n.Count)
 
 	// Output:
 	// {"T":10,"N":[{"T":1},{"T":2},{"T":3}]}
+	// 3
 	// {"T":20}
+	// 0
 	// {"T":20,"N":[{"T":1},{"T":2},{"T":3}]}
+	// 3
 	// {"T":10}
+	// 0
 
 }
 

@@ -10,14 +10,20 @@ import (
 
 func ExampleQStack_Push() {
 	s := qstack.New[any]()
+	fmt.Println(s.Len)
 	s.Print()
 	s.Push("one")
+	fmt.Println(s.Len)
 	s.Print()
 	s.Push("two")
+	fmt.Println(s.Len)
 	s.Print()
 	// Output:
+	// 0
 	// []
+	// 1
 	// ["one"]
+	// 2
 	// ["one","two"]
 }
 

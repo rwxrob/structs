@@ -161,7 +161,6 @@ func (n *Node[T]) Nodes() []*Node[T] {
 // Add creates a new Node with type and value under and returns. It also
 // updates Count.
 func (n *Node[T]) Add(t int, v T) *Node[T] {
-	n.Count++
 	u := new(Node[T])
 	u.T = t
 	u.V = v
@@ -209,6 +208,7 @@ func (n *Node[T]) Take(from *Node[T]) {
 		from.first.left = n.last
 		n.last = from.last
 	}
+	from.Count = 0
 	from.first = nil
 	from.last = nil
 }
@@ -216,6 +216,7 @@ func (n *Node[T]) Take(from *Node[T]) {
 // Append adds an existing Node under this one as if Add had been
 // called.
 func (n *Node[T]) Append(u *Node[T]) {
+	n.Count++
 	if n.first == nil {
 		n.first = u
 		n.last = u
@@ -239,6 +240,7 @@ func (n *Node[T]) Morph(c *Node[T]) {
 	n.right = c.right
 	n.first = c.first
 	n.last = c.last
+	n.Count = c.Count
 }
 
 // ------------------------------- Walk --------------------------------
