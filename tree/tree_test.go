@@ -8,7 +8,7 @@ import (
 )
 
 func ExampleTree() {
-	t := tree.New[any]([]string{"foo"})
+	t := tree.New[any]("foo")
 	t.Print()
 	t.Root.Print()
 	fmt.Println(t.Types.Names)
@@ -19,7 +19,7 @@ func ExampleTree() {
 }
 
 func ExampleTree_Node() {
-	t := tree.New[any]([]string{"foo"})
+	t := tree.New[any]("foo")
 	n := t.Node()
 	n.Print()
 	t.Print()

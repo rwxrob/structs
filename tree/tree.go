@@ -26,7 +26,7 @@ type E[T any] struct {
 }
 
 // New creates a new tree initialized with the given types and returns.
-func New[T any](types []string) *E[T] {
+func New[T any](types ...string) *E[T] {
 	t := new(E[T])
 	t.Init(types)
 	return t
