@@ -8,7 +8,7 @@ import (
 	"github.com/rwxrob/structs/qstack"
 )
 
-func ExampleQStack_Push() {
+func ExampleQS_Push() {
 	s := qstack.New[any]()
 	fmt.Println(s.Len)
 	s.Print()
@@ -27,7 +27,7 @@ func ExampleQStack_Push() {
 	// ["one","two"]
 }
 
-func ExampleQStack_Peek() {
+func ExampleQS_Peek() {
 	s := qstack.New[any]()
 	s.Print()
 	s.Push("it")
@@ -37,7 +37,7 @@ func ExampleQStack_Peek() {
 	// it
 }
 
-func ExampleQStack_Pop() {
+func ExampleQS_Pop() {
 	s := qstack.New[any]()
 	s.Print()
 	p := s.Pop()
@@ -60,7 +60,7 @@ func ExampleQStack_Pop() {
 	// 1
 }
 
-func ExampleQStack_Items() {
+func ExampleQS_Items() {
 	s := qstack.New[any]()
 	s.Push(1)
 	s.Push(true)
@@ -71,7 +71,7 @@ func ExampleQStack_Items() {
 	// [1,true,"foo",{"ten":10,"twenty":20}]
 }
 
-func ExampleQStack_Shift() {
+func ExampleQS_Shift() {
 	s := qstack.New[any]()
 	s.Push(1)
 	s.Push(true)
@@ -94,7 +94,7 @@ func ExampleQStack_Shift() {
 	// []
 }
 
-func ExampleQStack_Unshift() {
+func ExampleQS_Unshift() {
 	s := qstack.New[any]()
 	s.Push(1)
 	s.Push(true)
@@ -111,13 +111,13 @@ func ExampleQStack_Unshift() {
 	// 6
 }
 
-func ExampleQStack_invalid_JSON_Types() {
+func ExampleQS_invalid_JSON_Types() {
 	defer log.SetOutput(os.Stderr)
 	defer log.SetFlags(log.Flags())
 	log.SetOutput(os.Stdout)
 	log.SetFlags(0)
 
-	// QStack can be used to store any type,
+	// QS can be used to store any type,
 	// but log an error (no panic) when
 	// attempting to use the stack item
 	// in a string context.

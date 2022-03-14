@@ -12,24 +12,24 @@ type item[T any] struct {
 	next *item[T]
 }
 
-// QStack implements a combination of the traditional queue and stack
-// data structures using a linked list with Len field for high
+// QS ("queue stack") implements a combination of the traditional queue
+// and stack data structures using a linked list with Len field for high
 // performance. Sometimes you want more than what standard slices
 // provide, for example, when needing to prepend to a slice, which is
 // very inefficient using standard Go slices.
-type QStack[T any] struct {
+type QS[T any] struct {
 	Len int
 	top *item[T]
 	bot *item[T]
 }
 
-// New returns a newly initialized QStack of the given type of items.
-func New[T any]() *QStack[T] { return new(QStack[T]) }
+// New returns a newly initialized QS of the given type of items.
+func New[T any]() *QS[T] { return new(QS[T]) }
 
 // Items returns the items of the stack as a slice with newest items on
 // the next. To apply an iterator function over the items consider
 // using the rwxrob/fn package with Map/Filter/Reduce/Each functions.
-func (s *QStack[T]) Items() []T {
+func (s *QS[T]) Items() []T {
 	items := []T{}
 	for cur := s.bot; cur != nil; cur = cur.next {
 		items = append(items, cur.V)
@@ -39,7 +39,7 @@ func (s *QStack[T]) Items() []T {
 
 // Peek (stack) returns the current top value of the stack. Prefer Len to
 // check for emptiness.
-func (s *QStack[T]) Peek() T {
+func (s *QS[T]) Peek() T {
 	var rv T
 	if s.bot == nil {
 		return rv
@@ -47,7 +47,7 @@ func (s *QStack[T]) Peek() T {
 	return s.bot.V
 }
 
-func (s *QStack[T]) Push(these ...T) {
+func (s *QS[T]) Push(these ...T) {
 	for i := 0; i < len(these); i++ {
 		s.Len++
 		n := new(item[T])
@@ -66,7 +66,7 @@ func (s *QStack[T]) Push(these ...T) {
 }
 
 // Pop removes most recently pushed item from top of stack and returns it.
-func (s *QStack[T]) Pop() T {
+func (s *QS[T]) Pop() T {
 	var rv T
 	switch s.Len {
 	case 0:
@@ -88,7 +88,7 @@ func (s *QStack[T]) Pop() T {
 }
 
 // Shift removes an item from the bottom of the stack and returns it.
-func (s *QStack[T]) Shift() T {
+func (s *QS[T]) Shift() T {
 	var rv T
 	switch s.Len {
 	case 0:
@@ -110,7 +110,7 @@ func (s *QStack[T]) Shift() T {
 }
 
 // Unshift adds items to the bottom of the stack.
-func (s *QStack[T]) Unshift(these ...T) {
+func (s *QS[T]) Unshift(these ...T) {
 	for i := len(these) - 1; i >= 0; i-- {
 		s.Len++
 		n := new(item[T])
@@ -133,20 +133,20 @@ func (s *QStack[T]) Unshift(these ...T) {
 // MarshalJSON implements encoding/json.Marshaler and it needed to
 // fulfill the list of nodes since they are internally stored as
 // a linked list.
-func (s QStack[T]) MarshalJSON() ([]byte, error) {
+func (s QS[T]) MarshalJSON() ([]byte, error) {
 	return json.Marshal(s.Items())
 }
 
 // JSONL implements rwxrob/json.AsJSON.
-func (s *QStack[T]) JSON() ([]byte, error) { return s.MarshalJSON() }
+func (s *QS[T]) JSON() ([]byte, error) { return s.MarshalJSON() }
 
 // JSONL implements rwxrob/json.AsJSON.
-func (s *QStack[T]) JSONL() ([]byte, error) {
+func (s *QS[T]) JSONL() ([]byte, error) {
 	return json.MarshalIndent(s, "  ", "  ")
 }
 
 // String implements rwxrob/json.Stringer and fmt.Stringer.
-func (s QStack[T]) String() string {
+func (s QS[T]) String() string {
 	byt, err := s.JSON()
 	if err != nil {
 		log.Print(err)
@@ -155,7 +155,7 @@ func (s QStack[T]) String() string {
 }
 
 // StringLong implements rwxrob/json.Stringer.
-func (s QStack[T]) StringLong() string {
+func (s QS[T]) StringLong() string {
 	byt, err := s.JSONL()
 	if err != nil {
 		log.Print(err)
@@ -164,16 +164,16 @@ func (s QStack[T]) StringLong() string {
 }
 
 // String implements rwxrob/json.Printer.
-func (s *QStack[T]) Print() { fmt.Println(s.String()) }
+func (s *QS[T]) Print() { fmt.Println(s.String()) }
 
 // PrintLong implements rwxrob/json.Printer.
-func (s *QStack[T]) PrintLong() { fmt.Println(s.StringLong()) }
+func (s *QS[T]) PrintLong() { fmt.Println(s.StringLong()) }
 
 // Log implements rwxrob/json.Logger.
-func (s QStack[T]) Log() { log.Print(s.String()) }
+func (s QS[T]) Log() { log.Print(s.String()) }
 
 // LogLong implements rwxrob/json.Logger.
-func (s QStack[T]) LogLong() { log.Print(s.StringLong()) }
+func (s QS[T]) LogLong() { log.Print(s.StringLong()) }
 
 // ---------------------------- marshaling ----------------------------
 
