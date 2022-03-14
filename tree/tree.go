@@ -14,20 +14,20 @@ import (
 	"github.com/rwxrob/to"
 )
 
-// Tree is an encapsulating struct to contain the Root Node and all
-// possible Types for any Node. Most users of a Tree will make direct use
-// of Tree.Root (which can safely be swapped out for a root Node
-// reference at any time). Tree implements the rwxrob/json/AsJSON interface
-// and uses custom methods for MarshalJSON and UnmarshalJSON to
-// facilitate storage, transfer, and documentation.
-type Tree[T any] struct {
+// E ("tree-e") is an encapsulating struct to contain the Root Node and
+// all possible Types for any Node. Most users of a tree will make
+// direct use of E.Root (which can safely be swapped out for a root
+// Node reference at any time). Tree implements the rwxrob/json/AsJSON
+// interface and uses custom methods for MarshalJSON and UnmarshalJSON
+// to facilitate storage, transfer, and documentation.
+type E[T any] struct {
 	types.Types
 	Root *Node[T] `json:",omitempty"`
 }
 
-// New creates a new Tree initialized with the given types and returns.
-func New[T any](types []string) *Tree[T] {
-	t := new(Tree[T])
+// New creates a new tree initialized with the given types and returns.
+func New[T any](types []string) *E[T] {
+	t := new(E[T])
 	t.Init(types)
 	return t
 }
@@ -35,7 +35,7 @@ func New[T any](types []string) *Tree[T] {
 // Init initializes a tree creating its Root Node reference and assigning
 // it the type of 1 (0 is reserved for UNKNOWN). Init then assigns its
 // Types and indexes the TypesMap.
-func (t *Tree[T]) Init(types []string) *Tree[T] {
+func (t *E[T]) Init(types []string) *E[T] {
 	t.Types.Names = []string{"UNKNOWN"}
 	t.Types.Names = append(t.Types.Names, types...)
 	t.Types.Map = map[string]int{"UNKNOWN": 0}
@@ -48,10 +48,10 @@ func (t *Tree[T]) Init(types []string) *Tree[T] {
 	return t
 }
 
-// Node returns new detached Node initialized for this same Tree. Either
+// Node returns new detached Node initialized for this same tree. Either
 // an integer or string type may be passed and if none are passed the
 // UNKNOWN (0) type will be assigned.
-func (t *Tree[T]) Node(typ ...any) *Node[T] {
+func (t *E[T]) Node(typ ...any) *Node[T] {
 	node := new(Node[T])
 	switch len(typ) {
 	case 2:
@@ -67,15 +67,15 @@ func (t *Tree[T]) Node(typ ...any) *Node[T] {
 // ---------------------------- marshaling ----------------------------
 
 // JSONL implements rwxrob/json.AsJSON.
-func (s *Tree[T]) JSON() ([]byte, error) { return json.Marshal(s) }
+func (s *E[T]) JSON() ([]byte, error) { return json.Marshal(s) }
 
 // JSONL implements rwxrob/json.AsJSON.
-func (s *Tree[T]) JSONL() ([]byte, error) {
+func (s *E[T]) JSONL() ([]byte, error) {
 	return json.MarshalIndent(s, "  ", "  ")
 }
 
 // String implements rwxrob/json.Stringer and fmt.Stringer.
-func (s Tree[T]) String() string {
+func (s E[T]) String() string {
 	byt, err := s.JSON()
 	if err != nil {
 		log.Print(err)
@@ -84,7 +84,7 @@ func (s Tree[T]) String() string {
 }
 
 // StringLong implements rwxrob/json.Stringer.
-func (s Tree[T]) StringLong() string {
+func (s E[T]) StringLong() string {
 	byt, err := s.JSONL()
 	if err != nil {
 		log.Print(err)
@@ -93,16 +93,16 @@ func (s Tree[T]) StringLong() string {
 }
 
 // String implements rwxrob/json.Printer.
-func (s *Tree[T]) Print() { fmt.Println(s.String()) }
+func (s *E[T]) Print() { fmt.Println(s.String()) }
 
 // PrintLong implements rwxrob/json.Printer.
-func (s *Tree[T]) PrintLong() { fmt.Println(s.StringLong()) }
+func (s *E[T]) PrintLong() { fmt.Println(s.StringLong()) }
 
 // Log implements rwxrob/json.Logger.
-func (s Tree[T]) Log() { log.Print(s.String()) }
+func (s E[T]) Log() { log.Print(s.String()) }
 
 // LogLong implements rwxrob/json.Logger.
-func (s Tree[T]) LogLong() { each.Log(to.Lines(s.StringLong())) }
+func (s E[T]) LogLong() { each.Log(to.Lines(s.StringLong())) }
 
 // Node is an implementation of a "node" from traditional data
 // structures. Nodes can have other nodes under then (which some call
@@ -118,7 +118,7 @@ type Node[T any] struct {
 	V     T        `json:",omitempty"` // value
 	P     *Node[T] `json:"-"`          // up/parent
 	Count int      `json:"-"`          // node count
-	Tree  *Tree[T] `json:"-"`          // optional tree with type names
+	Tree  *E[T]    `json:"-"`          // optional tree with type names
 
 	left  *Node[T]
 	right *Node[T]
