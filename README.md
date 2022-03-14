@@ -27,6 +27,11 @@ shareable.
   enclosing whatever channel is needed in the iterator function and
   forking a goroutine off from within it.
 
+* **Don't stutter.** `tree.Tree` was changed to `tree.E` and
+  `qstack.QStack` was changed to `qstack.QS` to follow the idiomatic
+  "don't stutter" design preferred by core Go libraries like
+  `testing.T`. (We don't want to be another `context.Context`.) 
+
 ## TODO
 
 * Add equivalent methods to Node from JavaScript (InsertAfter, etc.)
