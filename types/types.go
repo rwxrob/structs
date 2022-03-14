@@ -18,6 +18,17 @@ type Types struct {
 	Map   Map   `json:",omitempty"`
 }
 
+// Set sets both the Names and Map to the new types ensuring that
+// 0 (UNKNOWN) remains reserved.
+func (t *Types) Set(types ...string) {
+	t.Names = []string{"UNKNOWN"}
+	t.Names = append(t.Names, types...)
+	t.Map = map[string]int{"UNKNOWN": 0}
+	for n, v := range types {
+		t.Map[v] = n + 1
+	}
+}
+
 // JSONL implements rwxrob/json.AsJSON.
 func (s *Types) JSON() ([]byte, error) { return json.Marshal(s) }
 

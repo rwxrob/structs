@@ -16,10 +16,10 @@ import (
 
 // E ("tree-e") is an encapsulating struct to contain the Root Node and
 // all possible Types for any Node. Most users of a tree will make
-// direct use of E.Root (which can safely be swapped out for a root
-// Node reference at any time). Tree implements the rwxrob/json/AsJSON
-// interface and uses custom methods for MarshalJSON and UnmarshalJSON
-// to facilitate storage, transfer, and documentation.
+// direct use of E.Root (which has a type of 1 by convention). Tree
+// implements the rwxrob/json/AsJSON interface and uses custom methods
+// for MarshalJSON and UnmarshalJSON to facilitate storage, transfer,
+// and documentation.
 type E[T any] struct {
 	types.Types
 	Root *Node[T] `json:",omitempty"`
@@ -32,16 +32,13 @@ func New[T any](types ...string) *E[T] {
 	return t
 }
 
-// Init initializes a tree creating its Root Node reference and assigning
-// it the type of 1 (0 is reserved for UNKNOWN). Init then assigns its
-// Types and indexes the TypesMap.
+// Init initializes a tree creating its Root Node reference and
+// assigning it the conventional type of 1 (0 is reserved for UNKNOWN).
+// The first type string name passed should coincide with the name for
+// the root type of 1 (ex: "Grammar", "Document").  Init creates and
+// indexes the Types by passing them to Types.Set.
 func (t *E[T]) Init(types []string) *E[T] {
-	t.Types.Names = []string{"UNKNOWN"}
-	t.Types.Names = append(t.Types.Names, types...)
-	t.Types.Map = map[string]int{"UNKNOWN": 0}
-	for n, v := range types {
-		t.Types.Map[v] = n + 1
-	}
+	t.Types.Set(types...)
 	t.Root = new(Node[T])
 	t.Root.T = 1
 	t.Root.Tree = t
