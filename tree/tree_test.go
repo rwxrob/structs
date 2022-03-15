@@ -20,15 +20,15 @@ func ExampleTree() {
 
 func ExampleTree_Node() {
 	t := tree.New[any]("foo")
-	n := t.Node()
+	n := t.Node(0, "")
 	n.Print()
 	t.Print()
 	t.Root.Append(n)
 	t.Root.Print()
 	// Output:
-	// {"T":0}
+	// {"T":0,"V":""}
 	// {"Names":["UNKNOWN","foo"],"Map":{"UNKNOWN":0,"foo":1},"Root":{"T":1}}
-	// {"T":1,"N":[{"T":0}]}
+	// {"T":1,"N":[{"T":0,"V":""}]}
 }
 
 func ExampleNode() {

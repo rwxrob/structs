@@ -45,18 +45,11 @@ func (t *E[T]) Init(types []string) *E[T] {
 	return t
 }
 
-// Node returns new detached Node initialized for this same tree. Either
-// an integer or string type may be passed and if none are passed the
-// UNKNOWN (0) type will be assigned.
-func (t *E[T]) Node(typ ...any) *Node[T] {
+// Node returns new detached Node initialized for this same tree.
+func (t *E[T]) Node(typ int, val T) *Node[T] {
 	node := new(Node[T])
-	switch len(typ) {
-	case 2:
-		node.V = typ[1].(T)
-		fallthrough
-	case 1:
-		node.T = typ[0].(int)
-	}
+	node.T = typ
+	node.V = val
 	node.Tree = t
 	return node
 }
