@@ -20,15 +20,15 @@ func ExampleTree() {
 
 func ExampleTree_Node() {
 	t := tree.New[any]("foo")
-	n := t.Node(0, "")
+	n := t.Node(10, "")
 	n.Print()
 	t.Print()
 	t.Root.Append(n)
 	t.Root.Print()
 	// Output:
-	// {"T":0,"V":""}
+	// {"T":10,"V":""}
 	// {"Names":["UNKNOWN","foo"],"Map":{"UNKNOWN":0,"foo":1},"Root":{"T":1}}
-	// {"T":1,"N":[{"T":0,"V":""}]}
+	// {"T":1,"N":[{"T":10,"V":""}]}
 }
 
 func ExampleNode() {
@@ -160,10 +160,13 @@ func ExampleNode_Nodes() {
 	m.Add(3, nil)
 	m.Add(3, nil)
 	fmt.Println(m.Nodes(), m.Count)
+	fmt.Println(n.Nodes(), n.Count)
 
 	// Output:
 	// [{"T":1} {"T":2}] 2
 	// [{"T":3} {"T":3}] 2
+	// [{"T":1} {"T":2} {"T":3,"N":[{"T":3},{"T":3}]}] 3
+
 }
 
 func ExampleNode_Cut_middle() {
