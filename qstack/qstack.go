@@ -41,10 +41,10 @@ func (s *QS[T]) Items() []T {
 // check for emptiness.
 func (s *QS[T]) Peek() T {
 	var rv T
-	if s.bot == nil {
+	if s.top == nil {
 		return rv
 	}
-	return s.bot.V
+	return s.top.V
 }
 
 func (s *QS[T]) Push(these ...T) {

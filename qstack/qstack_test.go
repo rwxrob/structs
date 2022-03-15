@@ -31,10 +31,39 @@ func ExampleQS_Peek() {
 	s := qstack.New[any]()
 	s.Print()
 	s.Push("it")
+	s.Print()
 	fmt.Println(s.Peek())
 	// Output:
 	// []
+	// ["it"]
 	// it
+}
+
+func ExampleQS_references() {
+
+	type Some struct {
+		Val string
+	}
+
+	s := qstack.New[*Some]()
+
+	// just one
+	x := &Some{"some"}
+	s.Push(x)
+	y := s.Peek()
+	//log.Printf("Is %p == %p?", x, y)
+	fmt.Println(x == y)
+
+	// two
+	xx := &Some{"other"}
+	s.Push(xx)
+	yy := s.Peek()
+	//log.Printf("Is %p == %p?", xx, yy)
+	fmt.Println(xx == yy)
+
+	// Output:
+	// true
+	// true
 }
 
 func ExampleQS_Pop() {
