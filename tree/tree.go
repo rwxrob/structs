@@ -244,6 +244,31 @@ first: %-12p last:   %p`, n, n.P, n.left, n.right, n.first, n.last)
 // LogRefs prints Refs to stderr.
 func (n *Node[T]) LogRefs() { each.Log(to.Lines(n.Refs())) }
 
+// Copy returns a duplicate of the Node and all its relations. Values
+// are copied using simple assignment. Copy is useful for preserving
+// state in order to revert a Node or to allow independent processing
+// with concurrency on individual copies. Note that Node[<ref>] types
+// will not produce deep copies of values.
+func (n *Node[T]) Copy() *Node[T] {
+	clones := map[*Node[T]]*Node[T]{}
+	list := qstack.New[*Node[T]]()
+	list.Unshift(n)
+	for list.Len > 0 {
+		cur := list.Shift()
+		list.Unshift(cur.Nodes()...)
+		c := *cur
+		clones[cur] = &c
+	}
+	for _, clone := range clones {
+		clone.P = clones[clone.P]
+		clone.left = clones[clone.left]
+		clone.right = clones[clone.right]
+		clone.first = clones[clone.first]
+		clone.last = clones[clone.last]
+	}
+	return clones[n]
+}
+
 // ------------------------------- Walk --------------------------------
 
 // WalkLevels will pass each Node in the tree to the given function

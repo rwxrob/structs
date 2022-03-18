@@ -2,6 +2,7 @@ package tree_test
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/rwxrob/structs/tree"
 	"github.com/rwxrob/structs/types"
@@ -289,4 +290,19 @@ func ExampleNode_LogRefs() {
 	n := new(tree.Node[any])
 	n.Add(2, "some")
 	n.LogRefs()
+}
+
+func ExampleNode_Copy() {
+	n := new(tree.Node[any])
+	n.Add(2, "some")
+	c := n.Copy()
+
+	log.Print("Original -------------------------")
+	n.LogRefs()
+	log.Print("Copy -----------------------------")
+	c.LogRefs()
+
+	fmt.Println(&n != &c)
+	// Output:
+	// true
 }
