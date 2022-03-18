@@ -284,3 +284,9 @@ func ExampleNode_Morph() {
 	// {"T":0,"N":[{"T":2,"V":"some"}]}
 	// {"T":0,"N":[{"T":2,"V":"some"}]}
 }
+
+func ExampleNode_LogRefs() {
+	n := new(tree.Node[any])
+	n.Add(2, "some")
+	n.LogRefs()
+}

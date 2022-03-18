@@ -233,6 +233,17 @@ func (n *Node[T]) Morph(c *Node[T]) {
 	n.Count = c.Count
 }
 
+// Refs returns the internal pointers as a string for visualization
+// mostly during debugging. See LogRefs.
+func (n *Node[T]) Refs() string {
+	return fmt.Sprintf(`self:  %p parent: %p
+left:  %-12p right:  %p
+first: %-12p last:   %p`, n, n.P, n.left, n.right, n.first, n.last)
+}
+
+// LogRefs prints Refs to stderr.
+func (n *Node[T]) LogRefs() { each.Log(to.Lines(n.Refs())) }
+
 // ------------------------------- Walk --------------------------------
 
 // WalkLevels will pass each Node in the tree to the given function
