@@ -2,7 +2,6 @@ package tree_test
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/rwxrob/structs/tree"
 	"github.com/rwxrob/structs/types"
@@ -286,23 +285,25 @@ func ExampleNode_Morph() {
 	// {"T":0,"N":[{"T":2,"V":"some"}]}
 }
 
-func ExampleNode_LogRefs() {
-	n := new(tree.Node[any])
-	n.Add(2, "some")
-	n.LogRefs()
-}
-
 func ExampleNode_Copy() {
 	n := new(tree.Node[any])
 	n.Add(2, "some")
-	c := n.Copy()
 
-	log.Print("Original -------------------------")
-	n.LogRefs()
-	log.Print("Copy -----------------------------")
-	c.LogRefs()
+	c := n.Copy()
+	c.Add(3, "new").Add(4, "deep")
+
+	// 	log.Print("Original -------------------------")
+	// 	n.LogRefs()
+	// 	log.Print("Copy -----------------------------")
+	// 	c.LogRefs()
 
 	fmt.Println(&n != &c)
+	n.Print()
+	c.Print()
+
 	// Output:
 	// true
+	// {"T":0,"N":[{"T":2,"V":"some"}]}
+	// {"T":0,"N":[{"T":2,"V":"some"},{"T":3,"V":"new","N":[{"T":4,"V":"deep"}]}]}
+
 }
