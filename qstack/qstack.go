@@ -4,6 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+
+	"github.com/rwxrob/fn/each"
+	"github.com/rwxrob/to"
 )
 
 type item[T any] struct {
@@ -126,6 +129,38 @@ func (s *QS[T]) Unshift(these ...T) {
 			s.bot = n
 		}
 	}
+}
+
+// Refs returns the internal pointers as a string for visualization
+// mostly during debugging. See LogRefs.
+func (i *item[T]) Refs() string {
+	return fmt.Sprintf(`self: %-12p prev: %-12p next: %p
+`, i, i.prev, i.next)
+}
+
+// LogRefs prints Refs to stderr.
+func (i *item[T]) LogRefs() { each.Log(to.Lines(i.Refs())) }
+
+// Copy returns a duplicate of the qstack and its relations. Values
+// are copied using simple assignment. Copy is useful for preserving
+// state in order to revert or to allow independent processing
+// with concurrency on individual copies. Note that QS[<ref>] types
+// will not produce deep copies of values.
+func (s *QS[T]) Copy() *QS[T] {
+	clones := map[*item[T]]*item[T]{}
+	for cur := s.bot; cur != nil; cur = cur.next {
+		c := *cur
+		clones[cur] = &c
+	}
+	for _, clone := range clones {
+		clone.prev = clones[clone.prev]
+		clone.next = clones[clone.next]
+	}
+	c := *s
+	copy := &c
+	copy.top = clones[copy.top]
+	copy.bot = clones[copy.bot]
+	return copy
 }
 
 // ---------------------------- marshaling ----------------------------

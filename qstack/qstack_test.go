@@ -159,3 +159,19 @@ func ExampleQS_invalid_JSON_Types() {
 	// json: unsupported type: func()
 
 }
+
+func ExampleQS_Copy() {
+	s := qstack.New[any]()
+	s.Push("some")
+	s.Push("thing")
+
+	c := s.Copy()
+	c.Pop()
+
+	s.Print()
+	c.Print()
+
+	// Output:
+	// ["some","thing"]
+	// ["some"]
+}
