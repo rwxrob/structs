@@ -4,9 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-
-	"github.com/rwxrob/fn/each"
-	"github.com/rwxrob/to"
 )
 
 type item[T any] struct {
@@ -132,14 +129,11 @@ func (s *QS[T]) Unshift(these ...T) {
 }
 
 // Refs returns the internal pointers as a string for visualization
-// mostly during debugging. See LogRefs.
+// mostly during debugging.
 func (i *item[T]) Refs() string {
 	return fmt.Sprintf(`self: %-12p prev: %-12p next: %p
 `, i, i.prev, i.next)
 }
-
-// LogRefs prints Refs to stderr.
-func (i *item[T]) LogRefs() { each.Log(to.Lines(i.Refs())) }
 
 // Copy returns a duplicate of the qstack and its relations. Values
 // are copied using simple assignment. Copy is useful for preserving
