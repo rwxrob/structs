@@ -175,3 +175,18 @@ func ExampleQS_Copy() {
 	// ["some","thing"]
 	// ["some"]
 }
+
+func ExampleQS_Scan() {
+	s := qstack.New[any]()
+	s.Push("foo")
+	s.Push("bar")
+	s.Push("and")
+	s.Push("one")
+
+	for s.Scan() {
+		fmt.Print(s.Current())
+	}
+
+	// Output:
+	// foobarandone
+}

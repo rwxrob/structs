@@ -19,6 +19,7 @@ type item[T any] struct {
 // very inefficient using standard Go slices.
 type QS[T any] struct {
 	Len int
+	cur *item[T]
 	top *item[T]
 	bot *item[T]
 }
@@ -35,6 +36,30 @@ func (s *QS[T]) Items() []T {
 		items = append(items, cur.V)
 	}
 	return items
+}
+
+// Scan advances to the next item each time it is called returning false
+// when there are no more items. Use Current to retrieve the value of
+// the current item.
+func (s *QS[T]) Scan() bool {
+	if s.cur == nil {
+		s.cur = s.bot
+		return true
+	}
+	if s.cur.next == nil {
+		return false
+	}
+	s.cur = s.cur.next
+	return true
+}
+
+// Current returns the current value of Scan.
+func (s *QS[T]) Current() T {
+	var rv T
+	if s.cur == nil {
+		return rv
+	}
+	return s.cur.V
 }
 
 // Peek (stack) returns the current top value of the stack. Prefer Len to
