@@ -19,6 +19,7 @@ type item[T any] struct {
 // very inefficient using standard Go slices.
 type QS[T any] struct {
 	Len int
+
 	cur *item[T]
 	top *item[T]
 	bot *item[T]
@@ -42,15 +43,23 @@ func (s *QS[T]) Items() []T {
 // when there are no more items. Use Current to retrieve the value of
 // the current item.
 func (s *QS[T]) Scan() bool {
+
+	// first one
 	if s.cur == nil {
 		s.cur = s.bot
 		return true
 	}
+
+	// last one
 	if s.cur.next == nil {
+		s.cur = nil
 		return false
 	}
+
+	// everything else
 	s.cur = s.cur.next
 	return true
+
 }
 
 // Current returns the current value of Scan.
@@ -191,13 +200,8 @@ func (s QS[T]) MarshalJSON() ([]byte, error) {
 	return json.Marshal(s.Items())
 }
 
-// JSONL implements rwxrob/json.AsJSON.
+// JSON implements rwxrob/json.AsJSON.
 func (s *QS[T]) JSON() ([]byte, error) { return s.MarshalJSON() }
-
-// JSONL implements rwxrob/json.AsJSON.
-func (s *QS[T]) JSONL() ([]byte, error) {
-	return json.MarshalIndent(s, "  ", "  ")
-}
 
 // String implements rwxrob/json.Stringer and fmt.Stringer.
 func (s QS[T]) String() string {
@@ -208,36 +212,16 @@ func (s QS[T]) String() string {
 	return string(byt)
 }
 
-// StringLong implements rwxrob/json.Stringer.
-func (s QS[T]) StringLong() string {
-	byt, err := s.JSONL()
-	if err != nil {
-		log.Print(err)
-	}
-	return string(byt)
-}
-
 // String implements rwxrob/json.Printer.
 func (s *QS[T]) Print() { fmt.Println(s.String()) }
-
-// PrintLong implements rwxrob/json.Printer.
-func (s *QS[T]) PrintLong() { fmt.Println(s.StringLong()) }
 
 // Log implements rwxrob/json.Logger.
 func (s QS[T]) Log() { log.Print(s.String()) }
 
-// LogLong implements rwxrob/json.Logger.
-func (s QS[T]) LogLong() { log.Print(s.StringLong()) }
-
 // ---------------------------- marshaling ----------------------------
 
-// JSONL implements rwxrob/json.AsJSON.
+// JSON implements rwxrob/json.AsJSON.
 func (s *item[T]) JSON() ([]byte, error) { return json.Marshal(s) }
-
-// JSONL implements rwxrob/json.AsJSON.
-func (s *item[T]) JSONL() ([]byte, error) {
-	return json.MarshalIndent(s, "  ", "  ")
-}
 
 // String implements rwxrob/json.Stringer and fmt.Stringer.
 func (s item[T]) String() string {
@@ -248,23 +232,8 @@ func (s item[T]) String() string {
 	return string(byt)
 }
 
-// StringLong implements rwxrob/json.Stringer.
-func (s item[T]) StringLong() string {
-	byt, err := s.JSONL()
-	if err != nil {
-		log.Print(err)
-	}
-	return string(byt)
-}
-
 // String implements rwxrob/json.Printer.
 func (s *item[T]) Print() { fmt.Println(s.String()) }
 
-// PrintLong implements rwxrob/json.Printer.
-func (s *item[T]) PrintLong() { fmt.Println(s.StringLong()) }
-
 // Log implements rwxrob/json.Logger.
 func (s item[T]) Log() { log.Print(s.String()) }
-
-// LogLong implements rwxrob/json.Logger.
-func (s item[T]) LogLong() { log.Print(s.StringLong()) }

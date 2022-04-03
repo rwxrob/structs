@@ -33,3 +33,14 @@ func ExampleFields() {
 	// commodo
 	// laborum.
 }
+
+func ExampleFields_scan() {
+	fields := qstack.Fields("some thing")
+	fmt.Println(fields)
+	for fields.Scan() {
+		fmt.Print(fields.Current())
+	}
+	// Output:
+	// ["some","thing"]
+	// something
+}
