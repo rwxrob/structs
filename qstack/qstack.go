@@ -62,6 +62,29 @@ func (s *QS[T]) Scan() bool {
 
 }
 
+// Back reverses to the previous item each time it is called returning false
+// when there are no more items. Use Current to retrieve the value of
+// the current item.
+func (s *QS[T]) Back() bool {
+
+	// last one
+	if s.cur == nil {
+		s.cur = s.top
+		return true
+	}
+
+	// first one
+	if s.cur.prev == nil {
+		s.cur = nil
+		return false
+	}
+
+	// everything else
+	s.cur = s.cur.prev
+	return true
+
+}
+
 // Current returns the current value of Scan.
 func (s *QS[T]) Current() T {
 	var rv T
