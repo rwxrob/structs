@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/rwxrob/json"
+	json "github.com/rwxrob/json/pkg"
 	"github.com/rwxrob/structs/qstack"
 )
 
