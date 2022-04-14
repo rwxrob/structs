@@ -190,3 +190,20 @@ func ExampleQS_Scan() {
 	// Output:
 	// foobarandone
 }
+
+func ExampleQS_Back() {
+	s := qstack.New[any]()
+	s.Push("foo")
+	s.Push("bar")
+	s.Push("and")
+	s.Push("one")
+
+	for s.Scan() {
+	}
+
+	for s.Back() {
+		fmt.Print(s.Current())
+	}
+	// Output:
+	// oneandbarfoo
+}
